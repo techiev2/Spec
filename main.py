@@ -18,7 +18,7 @@ def test():
 
 if __name__ == "__main__":
     s = Spec({
-            'repeats': 1000
+            'repeats': 10
         })
     s.add_method(test)
     s.run_specs()
