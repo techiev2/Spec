@@ -44,7 +44,8 @@ class Spec(object):
             args = method.get("args")
             method_def = method.get("method_def")
             method_name = method.get("method_name")
-            if args:
-                print timeit.timeit("{0}.__code__({1})".format(method_name, *args))
-            else:
-                print timeit.timeit("{0}.__code__()".format(method_def))
+            for i in range(self.config['repeats']):
+                if args:
+                    print timeit.timeit("{0}.__code__({1})".format(method_name, *args))
+                else:
+                    print timeit.timeit("{0}.__code__()".format(method_def))
