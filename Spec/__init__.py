@@ -41,6 +41,8 @@ class Spec(object):
 
     def run_specs(self):
         """Run test methods"""
+        if not self._test_methods:
+            raise Exception("No methods added to suite.")
         for method in self._test_methods:
             args = method.get("args")
             method_def = method.get("method_def")
