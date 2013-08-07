@@ -32,8 +32,16 @@ class Spec(object):
         if not test_method:
             raise Exception("No test method")
         if hasattr(test_method, "__call__"):
+            method_name = test_method.func_name
+            if method_name == '<lambda>':
+                # Attempted fix to uniquely identify lambdas
+                method_name = "{0}_{1}".format(
+                                method_name,
+                                [x.get('method_name')\
+                                 for x in\
+                                  self._test_methods].count('<lambda>'))
             test_data = {
-                'method_name': test_method.func_name,
+                'method_name': method_name,
                 'method_def': test_method,
                 'args': args or ()
             }
