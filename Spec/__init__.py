@@ -7,7 +7,6 @@ import timeit
 # from profile import Profile
 
 
-
 class Spec(object):
     """Spec class"""
     def __init__(self, config=None):
@@ -46,8 +45,14 @@ class Spec(object):
             method_def = method.get("method_def")
             method_name = method.get("method_name")
             if args:
-                method_time = timeit.timeit(method_def, number=self.config['repeats'])
+                print "Starting timeit on method {0}".format(method_name)
+                method_time = timeit.repeat(method_def, number=self.config['repeats'])
+                print "Ended timeit on method {0}".format(method_name)
             else:
-                method_time = timeit.timeit(method_def, number=self.config['repeats'])
+                print "Starting timeit on method {0}".format(method_name)
+                method_time = timeit.repeat(method_def, number=self.config['repeats'])
+                print "Ended timeit on method {0}".format(method_name)
 
-            self.results[method_name] = (1 / method_time) * self.config['repeats']
+            self.results[method_name] = (len(method_time) / 
+                                         sum(method_time)) *\
+                                          self.config['repeats']
