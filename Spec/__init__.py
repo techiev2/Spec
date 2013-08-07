@@ -12,9 +12,10 @@ class Spec(object):
     def __init__(self, config=None):
         """Spec class init"""
         default_config = {
-            'repeats': 100
+            'repeats': 100,
+            'calls': 100
         }
-        config_keys = ('repeats',)
+        config_keys = ('repeats', 'calls')
         if not (config or isinstance(config, dict)):
             config = default_config
         else:
@@ -46,11 +47,15 @@ class Spec(object):
             method_name = method.get("method_name")
             if args:
                 print "Starting timeit on method {0}".format(method_name)
-                method_time = timeit.repeat(method_def, number=self.config['repeats'])
+                method_time = timeit.repeat(method_def,
+                                            repeat=self.config['repeats'],
+                                            number=self.config['count'])
                 print "Ended timeit on method {0}".format(method_name)
             else:
                 print "Starting timeit on method {0}".format(method_name)
-                method_time = timeit.repeat(method_def, number=self.config['repeats'])
+                method_time = timeit.repeat(method_def,
+                                            repeat=self.config['repeats'],
+                                            number=self.config['count'])
                 print "Ended timeit on method {0}".format(method_name)
 
             self.results[method_name] = (len(method_time) / 
