@@ -28,6 +28,10 @@ class Spec(object):
         self.config = config
         self.results = {}
 
+    def clear_specs(self):
+        """Clear existing test specs"""
+        self._test_methods, self.results = [], {}
+
     def call_timeit(self, method):
         """Helper to call timeit on method and add to results"""
         if not (method and hasattr(method.get("method_def", {}), "__call__")):
