@@ -117,5 +117,5 @@ class Spec(object):
         if not self._test_methods:
             raise Exception("No methods added to suite.")
         for method in self._test_methods:
-#             self.call_timeit(method)
+            self.call_timeit(method)
             self.call_dis(method)
