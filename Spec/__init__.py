@@ -5,7 +5,18 @@ sys.dont_write_bytecode = True
 
 import timeit
 from collections import OrderedDict
+import dis
+from cStringIO import StringIO
+from contextlib import contextmanager
 # from profile import Profile
+
+
+@contextmanager
+def capture_stdout(output):
+    stdout = sys.stdout
+    sys.stdout = output
+    yield
+    sys.stdout = stdout
 
 
 class Spec(object):
@@ -86,9 +97,25 @@ class Spec(object):
             }
             self._test_methods.append(test_data)
 
+    def call_dis(self, test_method):
+        """Call dis on method signature"""
+        method_def = test_method.get("method_def")
+        method_name = test_method.get("method_name")
+        st_io = StringIO()
+        with capture_stdout(st_io):
+            dis.dis(method_def.func_code)
+
+        if not self.results.get(method_name):
+            self.results[method_name] = {
+                "dis": st_io.getvalue()
+            }
+        else:
+            self.results[method_name]['dis'] = st_io.getvalue()
+
     def run_specs(self):
         """Run test methods"""
         if not self._test_methods:
             raise Exception("No methods added to suite.")
         for method in self._test_methods:
-            self.call_timeit(method)
+#             self.call_timeit(method)
+            self.call_dis(method)
