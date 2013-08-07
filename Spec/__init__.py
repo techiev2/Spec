@@ -25,6 +25,7 @@ class Spec(object):
 
         self._test_methods = []
         self.config = config
+        self.results = {}
 
     def add_method(self, test_method, args=None):
         """Add method to spec"""
@@ -44,8 +45,9 @@ class Spec(object):
             args = method.get("args")
             method_def = method.get("method_def")
             method_name = method.get("method_name")
-            for i in range(self.config['repeats']):
-                if args:
-                    print timeit.timeit("{0}.__code__({1})".format(method_name, *args))
-                else:
-                    print timeit.timeit("{0}.__code__()".format(method_def))
+            if args:
+                method_time = timeit.timeit(method_def, number=self.config['repeats'])
+            else:
+                method_time = timeit.timeit(method_def, number=self.config['repeats'])
+
+            self.results[method_name] = (1 / method_time) * self.config['repeats']
