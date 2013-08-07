@@ -46,8 +46,8 @@ def xranger(min_val=None, max_val=None):
 
 if __name__ == "__main__":
     s = Spec({
-        'repeats': 100,
-        'calls': 100,
+        'repeats': 10,
+        'calls': 10,
         'sort': True
     })
     s.add_method(ranger, (1, 10000))
