@@ -51,13 +51,13 @@ class Spec(object):
                 print "Starting timeit on method {0}".format(method_name)
                 method_time = timeit.repeat(method_def,
                                             repeat=self.config['repeats'],
-                                            number=self.config['count'])
+                                            number=self.config['calls'])
                 print "Ended timeit on method {0}".format(method_name)
             else:
                 print "Starting timeit on method {0}".format(method_name)
                 method_time = timeit.repeat(method_def,
                                             repeat=self.config['repeats'],
-                                            number=self.config['count'])
+                                            number=self.config['calls'])
                 print "Ended timeit on method {0}".format(method_name)
 
             self.results[method_name] = (len(method_time) / 
