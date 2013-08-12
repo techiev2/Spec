@@ -26,9 +26,10 @@ class Spec(object):
         default_config = {
             'repeats': 100,
             'calls': 100,
-            'dis': False
+            'dis': False,
+            'timeit': False
         }
-        config_keys = ('repeats', 'calls')
+        config_keys = ('repeats', 'calls', 'dis', 'timeit')
         if not (config or isinstance(config, dict)):
             config = default_config
         else:
@@ -118,6 +119,7 @@ class Spec(object):
         if not self._test_methods:
             raise Exception("No methods added to suite.")
         for method in self._test_methods:
-            self.call_timeit(method)
+            if self.config.get('timeit', False):
+                self.call_timeit(method)
             if self.config.get('dis', False):
                 self.call_dis(method)
