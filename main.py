@@ -48,7 +48,8 @@ if __name__ == "__main__":
     s = Spec({
         'repeats': 10,
         'calls': 10,
-        'sort': True
+        'sort': True,
+	'timeit': True
     })
     s.add_method(ranger, (1, 10000))
     s.add_method(xranger, (1, 10000))
