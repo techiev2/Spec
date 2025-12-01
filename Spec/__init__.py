@@ -8,6 +8,8 @@ from collections import OrderedDict
 import dis
 from io import StringIO
 from contextlib import contextmanager
+from operator import itemgetter
+from json import dumps
 # from profile import Profile
 
 
@@ -40,6 +42,14 @@ class Spec(object):
         self._test_methods = []
         self.config = config
         self.results = {}
+
+    @property
+    def output(self):
+        return dict(sorted(self.results.items(), key=lambda x: x[1]['timeit']))
+
+    @property
+    def output_str(self):
+        return dumps(self.output, indent=2)
 
     def clear_specs(self):
         """Clear existing test specs"""
