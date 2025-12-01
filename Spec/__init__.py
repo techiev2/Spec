@@ -6,7 +6,7 @@ sys.dont_write_bytecode = True
 import timeit
 from collections import OrderedDict
 import dis
-from cStringIO import StringIO
+from io import StringIO
 from contextlib import contextmanager
 # from profile import Profile
 
@@ -53,17 +53,17 @@ class Spec(object):
         method_def = method.get("method_def")
         method_name = method.get("method_name")
         if args:
-            print "Starting timeit on method {0}".format(method_name)
+            print(f"Starting timeit on method {method_name}")
             timer = timeit.Timer(lambda: method_def.__call__(*args))
             method_time = timer.repeat(repeat=self.config['repeats'],
                                        number=self.config['calls'])
-            print "Ended timeit on method {0}".format(method_name)
+            print(f"Ended timeit on method {method_name}")
         else:
-            print "Starting timeit on method {0}".format(method_name)
+            print(f"Starting timeit on method {method_name}")
             method_time = timeit.repeat(method_def,
                                         repeat=self.config['repeats'],
                                         number=self.config['calls'])
-            print "Ended timeit on method {0}".format(method_name)
+            print(f"Ended timeit on method {method_name}")
 
         if not self.results.get(method_name):
             self.results[method_name] = {
@@ -84,7 +84,7 @@ class Spec(object):
         if not test_method:
             raise Exception("No test method")
         if hasattr(test_method, "__call__"):
-            method_name = test_method.func_name
+            method_name = test_method.__name__
             if method_name == '<lambda>':
                 # Attempted fix to uniquely identify lambdas
                 method_name = "{0}_{1}".format(

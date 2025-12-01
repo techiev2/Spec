@@ -54,9 +54,9 @@ if __name__ == "__main__":
     s.add_method(ranger, (1, 10000))
     s.add_method(xranger, (1, 10000))
     s.run_specs()
-    print s.results
+    print(s.results)
     s.clear_specs()
     s.add_method(x)
     s.add_method(y)
     s.run_specs()
-    print s.results
+    print(s.results)
