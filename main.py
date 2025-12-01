@@ -10,53 +10,43 @@ import sys
 sys.dont_write_bytecode = True
 from Spec import Spec
 
-
-def x():
-    a = False
-    if a:
-        return 1
-    else:
-        return 2
-
-def y():
-    a = None
-    if a:
-        return 1
-    else:
-        return 2
+def as_list_comprehension(data):
+    return [_*2 for _ in data]
 
 
-def ranger(min_val=None, max_val=None):
-    if not (min_val and max_val):
-        min_val, max_val = 1, 1000
-    z = 0
-    for x in range(min_val, max_val):
-        z += 1
-    return z
+def as_map_inner_fn(data):
+    def square_(num):
+        return num * 2
+    return list(map(square_, data))
 
 
-def xranger(min_val=None, max_val=None):
-    if not (min_val and max_val):
-        min_val, max_val = 1, 1000
-    z = 0
-    for x in range(min_val, max_val):
-        z += 1
-    return z
+def square(num):
+    return num * 2
+
+
+def as_map_external_fn(data):
+    return list(map(square, data))
+
+
+def imperative(data):
+    results = []
+    for item in data:
+        results.append(item * 2)
+    return results
 
 
 if __name__ == "__main__":
     s = Spec({
-        'repeats': 10,
-        'calls': 10,
+        'repeats': 1000,
+        'calls': 1000,
         'sort': True,
-	'timeit': True
+     	'timeit': True
     })
-    s.add_method(ranger, (1, 10000))
-    s.add_method(xranger, (1, 10000))
+    source_data = (1, 10000)
+    s.add_method(as_list_comprehension, (source_data,))
+    s.add_method(as_map_inner_fn,(source_data,))
+    s.add_method(as_map_external_fn,(source_data,))
+    s.add_method(imperative,(source_data,))
     s.run_specs()
-    print(s.results)
+    print(s.output_str)
     s.clear_specs()
-    s.add_method(x)
-    s.add_method(y)
-    s.run_specs()
-    print(s.results)
