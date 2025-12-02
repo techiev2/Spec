@@ -76,11 +76,10 @@ class Spec(object):
             print(f"Ended timeit on method {method_name}")
 
         if not self.results.get(method_name):
-            self.results[method_name] = {
-                "time_per_iteration": sum(method_time) / len(method_time)
-            }
+            timing_avg = sum(method_time) / len(method_time) if method_time else 0
+            self.results[method_name] = { "time_per_iteration": timing_avg }
         else:
-            self.results[method_name]['time_per_iteration'] = sum(method_time) / len(method_time)
+            self.results[method_name]['time_per_iteration'] = timing_avg
         if self.config.get("sort"):
           self.results = OrderedDict(sorted(self.results.items(),
                                       key=lambda x: x[1].get('time_per_iteration', float('inf')))) 
