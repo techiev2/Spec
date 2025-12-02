@@ -115,7 +115,7 @@ class Spec(object):
         method_name = test_method.get("method_name")
         st_io = StringIO()
         with capture_stdout(st_io):
-            dis.dis(method_def.func_code)
+            dis.dis(method_def.__code__)
 
         if not self.results.get(method_name):
             self.results[method_name] = {
