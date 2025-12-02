@@ -32,7 +32,7 @@ class Spec(object):
             'timeit': False
         }
         config_keys = ('repeats', 'calls', 'dis', 'timeit')
-        if not (config or isinstance(config, dict)):
+        if config is None or not isinstance(config, dict):
             config = default_config
         else:
             config = { x : config[x] for x in config if x in config_keys}
@@ -45,8 +45,8 @@ class Spec(object):
 
     @property
     def output(self):
-        return dict(sorted(self.results.items(), key=lambda x: x[1]['timeit']))
-
+        return dict(sorted(self.results.items(),
+                       key=lambda x: x[1].get('time_per_iteration', float('inf'))))
     @property
     def output_str(self):
         return dumps(self.output, indent=2)
@@ -77,18 +77,13 @@ class Spec(object):
 
         if not self.results.get(method_name):
             self.results[method_name] = {
-                "timeit": (len(method_time) /\
-                            sum(method_time)) *\
-                              self.config['repeats']
+                "time_per_iteration": sum(method_time) / len(method_time)
             }
         else:
-            self.results[method_name]['timeit'] = (len(method_time)\
-                                                    / sum(method_time)) *\
-                                                    self.config['repeats']
+            self.results[method_name]['time_per_iteration'] = sum(method_time) / len(method_time)
         if self.config.get("sort"):
-            self.results = OrderedDict(sorted(self.results.keys(),
-                                              key=lambda x: x[1]))
-
+          self.results = OrderedDict(sorted(self.results.items(),
+                                      key=lambda x: x[1].get('time_per_iteration', float('inf')))) 
     def add_method(self, test_method, args=None):
         """Add method to spec"""
         if not test_method:
