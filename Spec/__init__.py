@@ -11,6 +11,11 @@ from contextlib import contextmanager
 from operator import itemgetter
 from json import dumps
 # from profile import Profile
+from inspect import getsource
+
+
+def get_lambda_name(lambda_fn) -> str:
+    return getsource(lambda_fn).split('=')[0].strip()
 
 
 @contextmanager
@@ -92,12 +97,7 @@ class Spec(object):
         if hasattr(test_method, "__call__"):
             method_name = test_method.__name__
             if method_name == '<lambda>':
-                # Attempted fix to uniquely identify lambdas
-                method_name = "{0}_{1}".format(
-                                method_name,
-                                [x.get('method_name')\
-                                 for x in\
-                                  self._test_methods].count('<lambda>'))
+                method_name = f"{get_lambda_name(test_method)}[lambda_fn]"
             test_data = {
                 'method_name': method_name,
                 'method_def': test_method,

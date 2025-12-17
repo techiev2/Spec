@@ -28,6 +28,9 @@ def as_map_external_fn(data):
     return list(map(square, data))
 
 
+as_map_lambda = lambda data: list(map(square, data))
+
+
 def imperative(data):
     results = []
     for item in data:
@@ -46,6 +49,7 @@ if __name__ == "__main__":
     s.add_method(as_list_comprehension, (source_data,))
     s.add_method(as_map_inner_fn,(source_data,))
     s.add_method(as_map_external_fn,(source_data,))
+    s.add_method(as_map_lambda,(source_data,))
     s.add_method(imperative,(source_data,))
     s.run_specs()
     print(s.output_str)
