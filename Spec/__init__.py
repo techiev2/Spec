@@ -45,8 +45,10 @@ class Spec(object):
 
     @property
     def output(self):
-        return dict(sorted(self.results.items(),
-                       key=lambda x: x[1].get('time_per_iteration', float('inf'))))
+        sorted_data = dict(sorted(self.results.items(),
+                       key=lambda x: x[1].get('time_per_iteration')))
+        return [(k, v.get("time_per_iteration")) for k, v in sorted_data.items()]
+
     @property
     def output_str(self):
         return dumps(self.output, indent=2)
